@@ -1,0 +1,12 @@
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\CortadorDeVideosIngles.exe.config
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\CortadorDeVideosIngles.exe
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\CortadorDeVideosIngles.pdb
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\NAudio.dll
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\NAudio.xml
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csprojResolveAssemblyReference.cache
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.Principal.resources
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.Properties.Resources.resources
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csproj.GenerateResource.Cache
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csproj.CoreCompileInputs.cache
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.exe
+c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.pdb
