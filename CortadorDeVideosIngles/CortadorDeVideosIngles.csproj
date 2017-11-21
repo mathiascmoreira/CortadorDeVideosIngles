@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioPlayer.cs" />
+    <Compile Include="IAudioPlayer.cs" />
+    <Compile Include="MusicExecutionType.cs" />
+    <Compile Include="PlayerStatus.cs" />
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
     </Compile>

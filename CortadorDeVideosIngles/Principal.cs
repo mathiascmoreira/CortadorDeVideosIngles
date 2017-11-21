@@ -1,5 +1,4 @@
-﻿using NAudio.Wave;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Timers;
 
@@ -7,43 +6,69 @@ namespace CortadorDeVideosIngles
 {
     public partial class Principal : Form
     {
-        private IWavePlayer waveOutDevice;
-        private AudioFileReader audioFileReader;
-        private System.Timers.Timer timer;
+        private readonly IAudioPlayer _audioPlayer;
+        private System.Timers.Timer _timer;
 
-        int _playerPosition;
+        private int _playerPosition;
 
         public Principal()
         {
             InitializeComponent();
 
-            waveOutDevice = new WaveOut();
+            _audioPlayer = new AudioPlayer();
+            SeekerTrackBar.Maximum = 1000;
 
-            timer = new System.Timers.Timer();
-            timer.Interval = 300;
-            timer.Elapsed += Timer_Elapsed;
-           
+            SetTimer();
+        }
+
+        private void SetTimer()
+        {
+            _timer = new System.Timers.Timer
+            {
+                Interval = 300
+            };
+
+            _timer.Elapsed += Timer_Elapsed;
         }
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
-            if (audioFileReader != null)
-            {
-                waveOutDevice.Play();
+            _audioPlayer.Play();
 
-                timer.Start();
-            }
+            CheckTimer();
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            _audioPlayer.Pause();
+
+            CheckTimer();
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            _audioPlayer.Stop();
+
+            CheckTimer();
+        }
+
+        private void buttonRestart_Click(object sender, EventArgs e)
+        {
+            _audioPlayer.Restart();
+
+            CheckTimer();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _playerPosition = Convert.ToInt32(decimal.Round(audioFileReader.Position * 1000 / audioFileReader.Length));
+            _playerPosition = _audioPlayer.GetMusicCurrentTime().Milliseconds * 1000 /
+                              _audioPlayer.GetMusicTotalTime().Milliseconds;
 
-            if (trackBar.InvokeRequired)
+            if (SeekerTrackBar.InvokeRequired)
             {
-                trackBar.BeginInvoke((MethodInvoker)delegate
+                SeekerTrackBar.BeginInvoke((MethodInvoker)delegate
                 {
-                    trackBar.Value = _playerPosition;
+                    SeekerTrackBar.Value = _playerPosition;
                 });
             }
 
@@ -51,26 +76,12 @@ namespace CortadorDeVideosIngles
             {
                 timeLabel.BeginInvoke((MethodInvoker)delegate
                 {
-                    timeLabel.Text = $" {audioFileReader.CurrentTime.Minutes}:{audioFileReader.CurrentTime.Seconds}/{audioFileReader.TotalTime.Minutes}:{audioFileReader.TotalTime.Seconds}";
+                    timeLabel.Text = GetTimeLabelText();
                 });
             }
         }
 
-        private void buttonPause_Click(object sender, EventArgs e)
-        {
-            waveOutDevice.Pause();
-        }
-
-        private void buttonStop_Click(object sender, EventArgs e)
-        {
-            waveOutDevice.Stop();
-            timer.Stop();
-
-            trackBar.Value = 0;
-            audioFileReader.Position = 0;
-        }
-
-        private void stripMenuItemOpen_Click(object sender, EventArgs e)
+        private void StripMenuItemOpen_Click(object sender, EventArgs e)
         {
             var theDialog = new OpenFileDialog
             {
@@ -79,13 +90,24 @@ namespace CortadorDeVideosIngles
             };
             if (theDialog.ShowDialog() == DialogResult.OK)
             {
-                audioFileReader = new AudioFileReader(theDialog.FileName);
-                waveOutDevice.Init(audioFileReader);
-
-                audioFileReader.Position = 0;
+                _audioPlayer.LoadMusic(theDialog.FileName);
 
                 Text = theDialog.FileName;
             }
+        }
+
+        public string GetTimeLabelText()
+        {
+            return $"{_audioPlayer.GetMusicCurrentTime().Minutes}:{_audioPlayer.GetMusicCurrentTime().Seconds}/" +
+                $"{_audioPlayer.GetMusicTotalTime().Minutes}:{_audioPlayer.GetMusicTotalTime().Seconds}";
+        }
+
+        private void CheckTimer()
+        {
+            if (_audioPlayer.PlayerStatus == PlayerStatus.Playing)
+                _timer.Start();
+            else
+                _timer.Stop();
         }
     }
 }
