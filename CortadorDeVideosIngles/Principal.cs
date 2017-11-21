@@ -7,41 +7,43 @@ namespace CortadorDeVideosIngles
 {
     public partial class Principal : Form
     {
-        IWavePlayer waveOutDevice;
-        AudioFileReader audioFileReader;
+        private IWavePlayer waveOutDevice;
+        private AudioFileReader audioFileReader;
+        private System.Timers.Timer timer;
 
-        long audioPosition = 0;
-        int playerPosition = 0;
+        int _playerPosition;
 
         public Principal()
         {
             InitializeComponent();
 
+            waveOutDevice = new WaveOut();
+
+            timer = new System.Timers.Timer();
+            timer.Interval = 300;
+            timer.Elapsed += Timer_Elapsed;
+           
         }
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
-            waveOutDevice = new WaveOut();
-            audioFileReader = new AudioFileReader("C:\\Users\\Mathias\\Videos\\4K Video Downloader\\Does Drinking Alcohol Kill Your Gut Bacteria.mp3");
-            waveOutDevice.Init(audioFileReader);
+            if (audioFileReader != null)
+            {
+                waveOutDevice.Play();
 
-            waveOutDevice.Play();
-
-            var timer = new System.Timers.Timer();
-            timer.Interval = 300;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+                timer.Start();
+            }
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            playerPosition = Convert.ToInt32(decimal.Round(((audioFileReader.Position * 1000) / audioFileReader.Length)));
+            _playerPosition = Convert.ToInt32(decimal.Round(audioFileReader.Position * 1000 / audioFileReader.Length));
 
             if (trackBar.InvokeRequired)
             {
                 trackBar.BeginInvoke((MethodInvoker)delegate
                 {
-                    trackBar.Value = playerPosition;
+                    trackBar.Value = _playerPosition;
                 });
             }
 
@@ -62,6 +64,28 @@ namespace CortadorDeVideosIngles
         private void buttonStop_Click(object sender, EventArgs e)
         {
             waveOutDevice.Stop();
+            timer.Stop();
+
+            trackBar.Value = 0;
+            audioFileReader.Position = 0;
+        }
+
+        private void stripMenuItemOpen_Click(object sender, EventArgs e)
+        {
+            var theDialog = new OpenFileDialog
+            {
+                Title = "Select a MP3 file",
+                Filter = "MP3 files|*.mp3"
+            };
+            if (theDialog.ShowDialog() == DialogResult.OK)
+            {
+                audioFileReader = new AudioFileReader(theDialog.FileName);
+                waveOutDevice.Init(audioFileReader);
+
+                audioFileReader.Position = 0;
+
+                Text = theDialog.FileName;
+            }
         }
     }
 }

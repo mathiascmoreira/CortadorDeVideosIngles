@@ -10,3 +10,15 @@ c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\
 c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csproj.CoreCompileInputs.cache
 c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.exe
 c:\users\mathias\source\repos\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.pdb
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\CortadorDeVideosIngles.exe.config
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\CortadorDeVideosIngles.exe
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\CortadorDeVideosIngles.pdb
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\NAudio.dll
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\bin\Debug\NAudio.xml
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csprojResolveAssemblyReference.cache
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.Principal.resources
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.Properties.Resources.resources
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csproj.GenerateResource.Cache
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.csproj.CoreCompileInputs.cache
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.exe
+C:\Users\invent\Documents\Visual Studio 2017\Projects\CortadorDeVideosIngles\CortadorDeVideosIngles\obj\Debug\CortadorDeVideosIngles.pdb
