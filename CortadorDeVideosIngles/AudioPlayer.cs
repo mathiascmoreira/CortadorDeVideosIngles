@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NAudio.Wave;
+using System.Collections.Generic;
 
 namespace CortadorDeVideosIngles
 {
@@ -8,17 +9,45 @@ namespace CortadorDeVideosIngles
     {
         private IWavePlayer wavePlayer;
         private AudioFileReader audioFileReader;
+        public List<long> MarkedPoints { get; set; }
+        public List<SelectedRegion> SelectedRegions { get; set; }
 
-        public MusicExecutionType MusicExecutionType { get; set; }
+        private bool MusicLoaded { get; set; }
 
-        public bool MusicLoaded { get; set; }
+        public void SetPosition(decimal position)
+        {
+            if (!MusicLoaded)
+                return;
+
+            audioFileReader.Position = Convert.ToInt64(audioFileReader.Length * position);
+
+        }
+        public decimal GetPosition()
+        {
+            if (!MusicLoaded)
+                return 0;
+
+           return Convert.ToDecimal(audioFileReader.Position) / Convert.ToDecimal(audioFileReader.Length);
+        }
 
         public AudioPlayer()
         {
             wavePlayer = new WaveOut();
+
+            MarkedPoints = new List<long>();
+            SelectedRegions = new List<SelectedRegion>();
+
+            wavePlayer.PlaybackStopped += (sender, e) =>
+            {
+                if(audioFileReader.Position == audioFileReader.Length)
+                    OnPlayerEnds?.Invoke(sender, e);
+            };
         }
 
+        public event EventHandler OnPlayerEnds;
+
         public PlayerStatus PlayerStatus { get; set; }
+        public MusicExecutionType MusicExecutionType { get; set; }
 
         public void LoadMusic(string path)
         {
@@ -29,7 +58,6 @@ namespace CortadorDeVideosIngles
 
             if(!fileInfo.Extension.ToUpper().Equals(".MP3"))
                 throw new Exception("Arquivo deve ser mp3!");
-
 
             audioFileReader = new AudioFileReader(path);
 
@@ -64,6 +92,7 @@ namespace CortadorDeVideosIngles
                 return;
 
             wavePlayer.Stop();
+            audioFileReader.Position = 0;
             wavePlayer.Play();
 
             PlayerStatus = PlayerStatus.Playing;
@@ -75,6 +104,7 @@ namespace CortadorDeVideosIngles
                 return;
 
             wavePlayer.Stop();
+            audioFileReader.Position = 0;
 
             PlayerStatus = PlayerStatus.Stopped;
         }
@@ -131,7 +161,7 @@ namespace CortadorDeVideosIngles
 
         public void MarkPosition()
         {
-            throw new NotImplementedException();
+            MarkedPoints.Add(audioFileReader.Position);
         }
 
         public void NextMarkedPosition(bool pause = false)

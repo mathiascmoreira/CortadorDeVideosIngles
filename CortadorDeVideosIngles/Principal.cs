@@ -8,8 +8,7 @@ namespace CortadorDeVideosIngles
     {
         private readonly IAudioPlayer _audioPlayer;
         private System.Timers.Timer _timer;
-
-        private int _playerPosition;
+        private bool stopSeek;
 
         public Principal()
         {
@@ -17,6 +16,8 @@ namespace CortadorDeVideosIngles
 
             _audioPlayer = new AudioPlayer();
             SeekerTrackBar.Maximum = 1000;
+
+            _audioPlayer.OnPlayerEnds += _audioPlayer_OnPlayerEnds;
 
             SetTimer();
         }
@@ -47,28 +48,46 @@ namespace CortadorDeVideosIngles
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-            _audioPlayer.Stop();
-
-            CheckTimer();
-        }
+            Stop();
+        }        
 
         private void buttonRestart_Click(object sender, EventArgs e)
         {
             _audioPlayer.Restart();
 
             CheckTimer();
+
+            SeekerTrackBar.Value = 0;
+        }
+
+        private void _audioPlayer_OnPlayerEnds(object sender, EventArgs e)
+        {
+            Stop();
+        }
+
+        private void Stop()
+        {
+            _audioPlayer.Stop();
+
+            CheckTimer();
+
+            SeekerTrackBar.Value = 0;
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _playerPosition = _audioPlayer.GetMusicCurrentTime().Milliseconds * 1000 /
-                              _audioPlayer.GetMusicTotalTime().Milliseconds;
+            var playerPosition = _audioPlayer.GetPosition();
 
-            if (SeekerTrackBar.InvokeRequired)
+            var seekerBarPosition = Convert.ToInt32(decimal.Floor(_audioPlayer.GetPosition() * SeekerTrackBar.Maximum));
+
+            if (SeekerTrackBar.InvokeRequired && !stopSeek)
             {
                 SeekerTrackBar.BeginInvoke((MethodInvoker)delegate
                 {
-                    SeekerTrackBar.Value = _playerPosition;
+                    if (seekerBarPosition > SeekerTrackBar.Maximum)
+                        Stop();
+                    else
+                        SeekerTrackBar.Value = seekerBarPosition;
                 });
             }
 
@@ -108,6 +127,46 @@ namespace CortadorDeVideosIngles
                 _timer.Start();
             else
                 _timer.Stop();
+        }
+
+        private void SeekerTrackBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            var seekerBarPosition = Convert.ToDecimal(SeekerTrackBar.Value) / Convert.ToDecimal(SeekerTrackBar.Maximum);
+
+            _audioPlayer.SetPosition(seekerBarPosition);
+
+            stopSeek = false;
+        }
+
+        private void SeekerTrackBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            stopSeek = true;
+        }
+
+        private void SeekerTrackBar_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Left && e.KeyCode != Keys.Right)
+                return;
+
+            var seekerBarPosition = Convert.ToDecimal(SeekerTrackBar.Value) / Convert.ToDecimal(SeekerTrackBar.Maximum);
+
+            _audioPlayer.SetPosition(seekerBarPosition);
+
+            stopSeek = false;
+        }
+
+        private void SeekerTrackBar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Left && e.KeyCode != Keys.Right)
+                return;
+
+            stopSeek = true;
         }
     }
 }
